@@ -141,7 +141,9 @@ let g:python_host_prog = 'C:/Python27/python.exe'
 
     syntax enable
     set background=dark
-    colorscheme solarized8          " Load a colorscheme
+    if isdirectory(expand("~/AppData/Local/nvim/plugged/vim-solarized8"))
+        colorscheme solarized8          " Load a colorscheme
+    endif
 
     set tabpagemax=15               " Only show 15 tabs
     set showmode                    " Display the current mode
@@ -159,15 +161,13 @@ let g:python_host_prog = 'C:/Python27/python.exe'
                                     " Selected characters/lines in visual mode
     endif
 
-    if has('statusline')
+    if has('statusline') && isdirectory(expand("~/AppData/Local/nvim/plugged/vim-solarized8"))
         set laststatus=2
 
         " Broken down into easily includeable segments
         set statusline=%<%f\                     " Filename
         set statusline+=%w%h%m%r                 " Options
-        if !exists('g:override_spf13_bundles')
-            set statusline+=%{fugitive#statusline()} " Git Hotness
-        endif
+        set statusline+=%{fugitive#statusline()} " Git Hotness
         set statusline+=\ [%{&ff}/%Y]            " Filetype
         set statusline+=\ [%{getcwd()}]          " Current dir
         set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info

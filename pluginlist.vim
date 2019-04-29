@@ -8,11 +8,6 @@ Plug 'lifepillar/vim-solarized8'
 "Plug 'spf13/vim-colors'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-" --- nvim-completion-manager ---
-Plug 'ncm2/ncm2' 
-Plug 'roxma/nvim-yarp'
-Plug 'ncm2/ncm2-bufword'
-Plug 'ncm2/ncm2-path'
 
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
@@ -29,6 +24,13 @@ Plug 'bling/vim-bufferline'
 Plug 'vim-scripts/IndentConsistencyCop'
 " Plug 'vim-scripts/IndentConsistencyCopAutoCmds'
 
+Plug 'mfulz/cscope.nvim'
+
+" --- nvim-completion-manager ---
+Plug 'ncm2/ncm2' 
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
 
 
 " Windows only

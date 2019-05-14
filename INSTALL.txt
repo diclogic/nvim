@@ -2,7 +2,5 @@
 How to install:
 
 - run official neovim installer
-- copy ./bootstrapping/plug.vim to ./autoload folder
-- run neovim
 - run command :PlugInstall to install plugins
 - (windows only) edit and run setup-context-menu.reg to add NeoVim to context menu

@@ -27,10 +27,6 @@ else
     let g:vimrcdir = '~/.config/nvim/'
 endif
 
-function HasPlugin(name)
-    return isdirectory(expand(g:vimrcdir . 'plugged/' . a:name . '/')) && has_key(g:plugs, a:name)
-endfunction
-
 " Arrow Key Fix
 " https://github.com/spf13/spf13-vim/issues/780
 if &term[:4] == "xterm" || &term[:5] == 'screen' || &term[:3] == 'rxvt'
@@ -49,12 +45,17 @@ endif
 
 set background=dark         " Assume a dark background
 
-" Include bundles config 
+" Include plugins list
 if !WINDOWS() && filereadable(expand( "~/.config/nvim/pluginlist.vim"))
-    source ./pluginlist.vim
+    source ~/.config/nvim/pluginlist.vim
 elseif filereadable(expand( "~/AppData/Local/nvim/pluginlist.vim"))
-    source ./pluginlist.vim
+    source ~/AppData/Local/nvim/pluginlist.vim
 endif
+
+function! HasPlugin(name)
+    return isdirectory(expand(g:vimrcdir . 'plugged/' . a:name . '/')) && has_key(g:plugs, a:name)
+endfunction
+
 
 " General {
 
@@ -366,29 +367,22 @@ if HasPlugin("nerdtree")
     let g:nerdtree_tabs_open_on_gui_startup=0
 endif
 
-" Vim-airline
-" Set configuration options for the statusline plugin vim-airline.
-" Use the powerline theme and optionally enable powerline symbols.
-" To use the symbols , , , , , , and .in the statusline
-" segments add the following to your .vimrc.before.local file:
-"   let g:airline_powerline_fonts=1
-" If the previous symbols do not render for you then install a
-" powerline enabled font.
+" --- Vim-airline ---
+if HasPlugin('vim-airline-themes')
+    " See `:echo g:airline_theme_map` for some more choices
+    let g:airline_theme='solarized'
 
-" See `:echo g:airline_theme_map` for some more choices
-" Default in terminal vim is 'dark'
-if HasPlugin("vim-airline-themes")
-    if !exists('g:airline_theme')
-        let g:airline_theme = 'solarized'
-    endif
-    if !exists('g:airline_powerline_fonts')
-        " Use the default set of separators with a few customizations
+    if WINDOWS() && 0
         let g:airline_left_sep='›'  " Slightly fancier than '>'
         let g:airline_right_sep='‹' " Slightly fancier than '<'
+    else
+        " If the symbols ( , , , , , , and .) are rendered correctly enable
+        " powerline fonts, otherwise install a powerline enabled font
+        let g:airline_powerline_fonts=1
     endif
 endif
 
-" indent_guides
+" --- indent_guides ---
 if HasPlugin("vim-indent-guides")
     let g:indent_guides_start_level = 2
     let g:indent_guides_guide_size = 1
@@ -396,7 +390,7 @@ if HasPlugin("vim-indent-guides")
 endif
 
 " --- ncm2 ---
-if HasPlugin("ncm2")
+if HasPlugin('ncm2')
     autocmd BufEnter * call ncm2#enable_for_buffer()
     set completeopt=noinsert,menuone,noselect
 endif
@@ -423,7 +417,7 @@ if HasPlugin('cscope.nvim')
     " autocmd BufEnter * call cscope.nvim#CScopeStart()
 endif
 
-if has("cscope")
+if has('cscope') && 0
     if WINDOWS()
         set csprg=D:\opt\cygwin64\usr\local\bin\cscope.exe
     else
@@ -439,6 +433,26 @@ if has("cscope")
         silent cs add $CSCOPE_DB
     endif
 endif
+
+" --- LanguageClient-neovim ---
+set hidden " < Required for operations modifying multiple buffers like rename.
+
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+    \ 'python': ['/usr/local/bin/pyls'],
+    \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+    \ }
+
+"nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" Or map each action separately
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
+" --- deoplete ---
+let g:deoplete#enable_at_startup = 1
 
 " }
 

@@ -1,12 +1,5 @@
-" Install vim-plug if not installed
-if empty(glob(g:vimrcdir.'autoload/plug.vim'))
-  silent !curl -fLo "${vimrcdir}autoload/plug.vim" --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall
-endif
 
-call plug#begin(g:vimrcdir . 'plugged')
-
+call plug#begin(stdpath('config').'/plugged')
 
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'lifepillar/vim-solarized8'
@@ -31,10 +24,6 @@ Plug 'bling/vim-bufferline'
 " Plug 'ncm2/ncm2-path'
 
 
-" Windows only
-if WINDOWS()
-"    Plug 'vim-scripts/visual_studio.vim'
-endif
 
 " Python
 "Plug 'klen/python-mode'
@@ -76,5 +65,8 @@ Plug 'vim-airline/vim-airline-themes'
 " --- others ---
 Plug 'chrisbra/csv.vim'
 
+
 call plug#end()
+
+" vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=9 foldmethod=marker :
 

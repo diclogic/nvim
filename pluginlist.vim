@@ -57,7 +57,10 @@ else
                 \ }
 endif
 
-Plug 'junegunn/fzf'
+if !WINDOWS()
+    Plug '/usr/local/opt/fzf'
+    Plug 'junegunn/fzf.vim'
+endif
 
 " --- Git ---
 Plug 'airblade/vim-gitgutter'
@@ -69,6 +72,9 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 " --- airline ---
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+" --- others ---
+Plug 'chrisbra/csv.vim'
 
 call plug#end()
 

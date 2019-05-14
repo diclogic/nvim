@@ -59,7 +59,7 @@ if HasPlugin('vim-airline-themes')
     " See `:echo g:airline_theme_map` for some more choices
     let g:airline_theme='solarized'
 
-    if WINDOWS()
+    if WINDOWS() || $TERM[:4]=='xterm'
         let g:airline_left_sep='›'  " Slightly fancier than '>'
         let g:airline_right_sep='‹' " Slightly fancier than '<'
     else

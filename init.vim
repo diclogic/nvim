@@ -2,15 +2,14 @@
 exe 'source' expand(stdpath('config').'/'.'init.vim.d/basic.vim')
 
 " Install vim-plug if not installed
-if empty(extend(stdpath('config').'/autoload/plug.vim'))
-  silent !curl -fLo stdpath('config').'/autoload/plug.vim' --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+if empty(glob(stdpath('config').'/autoload/plug.vim'))
+  silent exe "!curl -fLo" stdpath('config').'/autoload/plug.vim' "--create-dirs"
+    \ "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
   autocmd VimEnter * PlugInstall
 endif
 
 " Load plugins
 exe 'source' expand(stdpath('config').'/'.'init.vim.d/pluginlist.vim')
-call plug#end()
 
 function! HasPlugin(name)
     return isdirectory(expand(stdpath('config').'/plugged/'.a:name.'/')) && has_key(g:plugs, a:name)

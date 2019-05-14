@@ -1,7 +1,6 @@
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=9 foldmethod=marker :
 
 set background=dark         " Assume a dark background
-set nocompatible        " Must be first line
 
 
 " Identify platform 
@@ -23,16 +22,16 @@ if !WINDOWS()
 endif
 
 if WINDOWS()
-    let g:vimrcdir = '~/AppData/Local/nvim'
+    let g:vimrcdir = '~/AppData/Local/nvim/'
 else
-    let g:vimrcdir = '~/.config/nvim'
+    let g:vimrcdir = '~/.config/nvim/'
 endif
 
 function HasPlugin(name)
-    return isdirectory(expand(g:vimrcdir . "/plugged/" . a:name . "/"))
+    return isdirectory(expand(g:vimrcdir . 'plugged/' . a:name . '/')) && has_key(g:plugs, a:name)
 endfunction
 
-" Arrow Key Fix 
+" Arrow Key Fix
 " https://github.com/spf13/spf13-vim/issues/780
 if &term[:4] == "xterm" || &term[:5] == 'screen' || &term[:3] == 'rxvt'
     inoremap <silent> <C-[>OC <RIGHT>
@@ -52,26 +51,15 @@ set background=dark         " Assume a dark background
 
 " Include bundles config 
 if !WINDOWS() && filereadable(expand( "~/.config/nvim/pluginlist.vim"))
-    source ~/.config/nvim/pluginlist.vim
+    source ./pluginlist.vim
 elseif filereadable(expand( "~/AppData/Local/nvim/pluginlist.vim"))
-    source ~/AppData/Local/nvim/pluginlist.vim
+    source ./pluginlist.vim
 endif
 
 " General {
 
 set background=dark         " Assume a dark background
 
-" Allow to trigger background
-function! ToggleBG()
-    let s:tbg = &background
-    " Inversion
-    if s:tbg == "dark"
-        set background=light
-    else
-        set background=dark
-    endif
-endfunction
-noremap <leader>bg :call ToggleBG()<CR>
 
 " if !has('gui')
 "set term=$TERM          " Make arrow and other keys work
@@ -82,22 +70,13 @@ set mouse=a                 " Automatically enable mouse usage
 set mousehide               " Hide the mouse cursor while typing
 scriptencoding utf-8
 
+" sync * and + registers with the system clipboard
 if has('clipboard')
-    if has('unnamedplus')  " When possible use + register for copy-paste
-        set clipboard=unnamed,unnamedplus
-    else         " On mac and Windows, use * register for copy-paste
-        set clipboard=unnamed
-    endif
+    set clipboard^=unnamed,unnamedplus
 endif
 
-" Most prefer to automatically switch to the current file directory when
-" a new buffer is opened; to prevent this behavior, add the following to
-" your .vimrc.before.local file:
-"   let g:spf13_no_autochdir = 1
-if !exists('g:spf13_no_autochdir')
-    autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
-    " Always switch to the current file directory
-endif
+" Automatically switch to the current file directory when a new buffer is opened
+autocmd BufEnter * if bufname("") !~ "^\[A-Za-z0-9\]*://" | lcd %:p:h | endif
 
 "set autowrite                       " Automatically write a file when leaving a modified buffer
 set shortmess+=filmnrxoOtT          " Abbrev. of messages (avoids 'hit enter')
@@ -117,25 +96,19 @@ endif
 
 " Instead of reverting the cursor to the last position in the buffer, we
 " set it to the first line when editing a git commit message
-au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+autocmd FileType gitcommit autocmd! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
 
-" http://vim.wikia.com/wiki/Restore_cursor_to_file_position_in_previous_editing_session
 " Restore cursor to file position in previous editing session
-" To disable this, add the following to your .vimrc.before.local file:
-"   let g:spf13_no_restore_cursor = 1
-if !exists('g:spf13_no_restore_cursor')
-    function! ResCur()
-        if line("'\"") <= line("$")
-            silent! normal! g`"
-            return 1
-        endif
-    endfunction
-
-    augroup resCur
-        autocmd!
-        autocmd BufWinEnter * call ResCur()
-    augroup END
-endif
+function! ResCur()
+    if line("'\"") <= line("$")
+        silent! normal! g`"
+        return 1
+    endif
+endfunction
+augroup resCur
+    autocmd!
+    autocmd BufWinEnter * call ResCur()
+augroup END
 
 " Setting up the directories 
 set backup                  " Backups are nice ...
@@ -159,9 +132,8 @@ if HasPlugin("vim-solarized8")
     colorscheme solarized8          " Load a colorscheme
 endif
 
-set tabpagemax=15               " Only show 15 tabs
+"set tabpagemax=15               " Only show 15 tabs
 set showmode                    " Display the current mode
-
 set cursorline                  " Highlight current line
 
 highlight clear SignColumn      " SignColumn should match background
@@ -175,13 +147,16 @@ if has('cmdline_info')
     " Selected characters/lines in visual mode
 endif
 
-if has('statusline') && HasPlugin("vim-solarized8")
+" Status Bar
+if has('statusline') && HasPlugin('vim-solarized8')
     set laststatus=2
 
     " Broken down into easily includeable segments
     set statusline=%<%f\                     " Filename
     set statusline+=%w%h%m%r                 " Options
+    if HasPlugin('fugitive')
         set statusline+=%{fugitive#statusline()} " Git Hotness
+    endif
     set statusline+=\ [%{&ff}/%Y]            " Filetype
     set statusline+=\ [%{getcwd()}]          " Current dir
     set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
@@ -204,39 +179,33 @@ set scrolloff=3                 " Minimum lines to keep above and below cursor
 set foldenable                  " Auto fold code
 set list
 set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+set splitright                  " Puts new vsplit windows to the right of the current
+set splitbelow                  " Puts new split windows to the bottom of the current
 
 " }
 
 " Formatting {
 
-set nowrap                      " Do not wrap long lines
+"set nowrap                      " Do not wrap long lines
 set autoindent                  " Indent at the same level of the previous line
 set shiftwidth=4                " Use indents of 4 spaces
 set expandtab                   " Tabs are spaces, not tabs
 set tabstop=4                   " An indentation every four columns
 set softtabstop=4               " Let backspace delete indent
 set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
-set splitright                  " Puts new vsplit windows to the right of the current
-set splitbelow                  " Puts new split windows to the bottom of the current
 "set matchpairs+=<:>             " Match, to be used with %
 set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 "set comments=sl:/*,mb:*,elx:*/  " auto format comment blocks
+
 " Remove trailing whitespaces and ^M chars
-" To disable the stripping of whitespace, add the following to your
-" .vimrc.before.local file:
-"   let g:spf13_keep_trailing_whitespace = 1
-autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl,sql autocmd BufWritePre <buffer> if !exists('g:spf13_keep_trailing_whitespace') | call StripTrailingWhitespace() | endif
-"autocmd FileType go autocmd BufWritePre <buffer> Fmt
-autocmd BufNewFile,BufRead *.html.twig set filetype=html.twig
-autocmd FileType haskell,puppet,ruby,yml setlocal expandtab shiftwidth=2 softtabstop=2
-" preceding line best in a plugin but here for now.
+autocmd FileType c,cpp,java,go,php,javascript,python,rust,xml,yml,sql autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 
-autocmd BufNewFile,BufRead *.coffee set filetype=coffee
+" no line-wrapping for code files
+autocmd FileType c,cpp,java,go,php,javascript,python,rust,xml,yml,sql setlocal nowrap
 
-" Workaround vim-commentary for Haskell
-autocmd FileType haskell setlocal commentstring=--\ %s
-" Workaround broken colour highlighting in Haskell
-autocmd FileType haskell,rust setlocal nospell
+" Match <, > for templates in c++
+autocmd FileType cpp setlocal matchpairs+=<:>
+
 
 " }
 
@@ -245,33 +214,12 @@ autocmd FileType haskell,rust setlocal nospell
 let mapleader=","
 let maplocalleader="_"
 
-" The default mappings for editing and applying the spf13 configuration
-" are <leader>ev and <leader>sv respectively. Change them to your preference
-" by adding the following to your .vimrc.before.local file:
-"   let g:spf13_edit_config_mapping='<leader>ec'
-"   let g:spf13_apply_config_mapping='<leader>sc'
-if !exists('g:spf13_edit_config_mapping')
-    let s:spf13_edit_config_mapping = '<leader>ev'
-else
-    let s:spf13_edit_config_mapping = g:spf13_edit_config_mapping
-endif
-if !exists('g:spf13_apply_config_mapping')
-    let s:spf13_apply_config_mapping = '<leader>sv'
-else
-    let s:spf13_apply_config_mapping = g:spf13_apply_config_mapping
-endif
-
 " Easier moving in tabs and windows
-" The lines conflict with the default digraph mapping of <C-K>
-" If you prefer that functionality, add the following to your
-" .vimrc.before.local file:
-"   let g:spf13_no_easyWindows = 1
-if !exists('g:spf13_no_easyWindows')
-    map <C-J> <C-W>j<C-W>_
-    map <C-K> <C-W>k<C-W>_
-    map <C-L> <C-W>l<C-W>_
-    map <C-H> <C-W>h<C-W>_
-endif
+" NB: The lines conflict with the default digraph mapping of <C-K>
+map <C-J> <C-W>j<C-W>_
+map <C-K> <C-W>k<C-W>_
+map <C-L> <C-W>l<C-W>_
+map <C-H> <C-W>h<C-W>_
 
 " Wrapped lines goes down/up to next row, rather than next line in file.
 noremap j gj
@@ -280,10 +228,7 @@ noremap k gk
 " End/Start of line motion keys act relative to row/wrap width in the
 " presence of `:set wrap`, and relative to line for `:set nowrap`.
 " Default vim behaviour is to act relative to text line in both cases
-" If you prefer the default behaviour, add the following to your
-" .vimrc.before.local file:
-"   let g:spf13_no_wrapRelMotion = 1
-if !exists('g:spf13_no_wrapRelMotion')
+" {
     " Same for 0, home, end, etc
     function! WrapRelativeMotion(key, ...)
         let vis_sel=""
@@ -314,20 +259,15 @@ if !exists('g:spf13_no_wrapRelMotion')
     vnoremap 0 :<C-U>call WrapRelativeMotion("0", 1)<CR>
     vnoremap <Home> :<C-U>call WrapRelativeMotion("0", 1)<CR>
     vnoremap ^ :<C-U>call WrapRelativeMotion("^", 1)<CR>
-endif
+" }
 
-" The following two lines conflict with moving to top and
-" bottom of the screen
-" If you prefer that functionality, add the following to your
-" .vimrc.before.local file:
-"   let g:spf13_no_fastTabs = 1
-if !exists('g:spf13_no_fastTabs')
-    map <S-H> gT
-    map <S-L> gt
-endif
+" Fast Tabs
+" NB: The following two lines conflict with moving to top and bottom of the screen
+map <S-H> gT
+map <S-L> gt
 
 " Stupid shift key fixes
-if !exists('g:spf13_no_keyfixes')
+" {
     if has("user_commands")
         command! -bang -nargs=* -complete=file E e<bang> <args>
         command! -bang -nargs=* -complete=file W w<bang> <args>
@@ -341,7 +281,7 @@ if !exists('g:spf13_no_keyfixes')
     endif
 
     cmap Tabe tabe
-endif
+" }
 
 " Yank from the cursor to the end of the line, to be consistent with C and D.
 nnoremap Y y$
@@ -358,14 +298,11 @@ nmap <leader>f7 :set foldlevel=7<CR>
 nmap <leader>f8 :set foldlevel=8<CR>
 nmap <leader>f9 :set foldlevel=9<CR>
 
-" Most prefer to toggle search highlighting rather than clear the current
-" search results. To clear search highlighting rather than toggle it on
-" and off, add the following to your .vimrc.before.local file:
-"   let g:spf13_clear_search_highlight = 1
-if exists('g:spf13_clear_search_highlight')
-    nmap <silent> <leader>/ :nohlsearch<CR>
-else
+" Toggle search highlighting -OR- clear the current search results.
+if !exists('g:option_clear_search_highlight')
     nmap <silent> <leader>/ :set invhlsearch<CR>
+else
+    nmap <silent> <leader>/ :nohlsearch<CR>
 endif
 
 " Find merge conflict markers
@@ -398,8 +335,7 @@ map <leader>et :tabe %%
 " Adjust viewports to the same size
 map <Leader>= <C-w>=
 
-" Map <Leader>ff to display all lines with keyword under cursor
-" and ask which one to jump to
+" Display all lines with keyword under cursor and ask which one to jump to
 nmap <Leader>ff [I:let nr = input("Which one: ")<Bar>exe "normal " . nr ."[\t"<CR>
 
 " Easier horizontal scrolling
@@ -470,7 +406,8 @@ if HasPlugin('nerdcommenter')
     let g:NERDSpaceDelims = 1
 endif
 
-"if HasPlugin('cscope.nvim')
+" --- cscope ---
+if HasPlugin('cscope.nvim')
     let g:cscope_dir = '~/.nvim-cscope'
 
     " Map the default keys on startup
@@ -483,8 +420,25 @@ endif
     " Defaults to off
     let g:cscope_update_on_start = 1
 
-    autocmd BufEnter * call cscope.nvim#CScopeStart()
-"endif
+    " autocmd BufEnter * call cscope.nvim#CScopeStart()
+endif
+
+if has("cscope")
+    if WINDOWS()
+        set csprg=D:\opt\cygwin64\usr\local\bin\cscope.exe
+    else
+        set csprg=/usr/local/bin/cscope
+    endif
+    set csto=0
+    set cst
+    " add any database in current directory
+    if filereadable("cscope.out")
+        silent cs add cscope.out
+        " else add database pointed to by environment
+    elseif $CSCOPE_DB != ""
+        silent cs add $CSCOPE_DB
+    endif
+endif
 
 " }
 

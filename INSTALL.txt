@@ -2,5 +2,7 @@
 How to install:
 
 - run official neovim installer
-- run command :PlugInstall to install plugins
+- launch neovim for first time should trigger installation of all plugins
 - (windows only) edit and run setup-context-menu.reg to add NeoVim to context menu
+- run :checkhealth to test the installation
+

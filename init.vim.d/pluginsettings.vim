@@ -72,13 +72,20 @@ endif
 " --- LanguageClient-neovim ---
 set hidden " < Required for operations modifying multiple buffers like rename.
 
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-    \ 'python': ['/usr/local/bin/pyls'],
-    \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
-    \ }
+if WINDOWS()
+    let g:LanguageClient_serverCommands = {
+                \ 'python': ['pyls.exe'],
+                \ 'cpp': ['D:/opt/cquery/bin/cquery.exe', '--log-file=D:/temp/cq.log', '--init={"cacheDirectory":"D:/temp/cquery/"}'],
+                \ }
+else
+    let g:LanguageClient_serverCommands = {
+                \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+                \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+                \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+                \ 'python': ['/usr/local/bin/pyls'],
+                \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+                \ }
+endif
 
 "nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 " Or map each action separately

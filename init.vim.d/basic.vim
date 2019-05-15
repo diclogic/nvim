@@ -11,7 +11,7 @@ silent function! WINDOWS()
     return  (has('win32') || has('win64'))
 endfunction
 
-" Basics
+" Set shell for unix-like OSs
 if !WINDOWS()
     set shell=/bin/sh
 endif
@@ -19,6 +19,7 @@ endif
 " Setup Python host
 if WINDOWS()
     let g:python_host_prog = 'C:/Python27/python.exe'
+    let g:python3_host_prog = expand(stdpath('config').'/../Programs/Python/Python37/python.exe')
 elseif OSX()
     let g:python_host_prog = '/usr/local/bin/python2'
     let g:python3_host_prog = '/usr/local/bin/python3'
@@ -26,7 +27,6 @@ else
     let g:python_host_prog = '/usr/bin/python'
 endif
 
-set background=dark         " Assume a dark background
 
 " === utility functions ===
 

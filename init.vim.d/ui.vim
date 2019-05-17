@@ -59,13 +59,12 @@ if HasPlugin('vim-airline-themes')
     " See `:echo g:airline_theme_map` for some more choices
     let g:airline_theme='solarized'
 
-    if WINDOWS() || $TERM[:4]=='xterm'
+    " If the symbols ( , , , , , , and .) are rendered correctly
+    " enable powerline fonts, otherwise install a powerline enabled font
+    let g:airline_powerline_fonts = 0
+    if !g:airline_powerline_fonts
         let g:airline_left_sep='›'  " Slightly fancier than '>'
         let g:airline_right_sep='‹' " Slightly fancier than '<'
-    else
-        " If the symbols ( , , , , , , and .) are rendered correctly
-        " enable powerline fonts, otherwise install a powerline enabled font
-        let g:airline_powerline_fonts=1
     endif
 
     let g:airline#extensions#tabline#enabled = 1

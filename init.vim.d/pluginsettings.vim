@@ -35,6 +35,7 @@ if HasPlugin('nerdcommenter')
     let g:NERDSpaceDelims = 1
 endif
 
+
 " --- LanguageClient-neovim ---
 set hidden " < Required for operations modifying multiple buffers like rename.
 
@@ -45,8 +46,12 @@ if WINDOWS()
                 \ }
 else
     let g:LanguageClient_serverCommands = {
-                \ 'python': ['/usr/local/bin/pyls'],
                 \ 'cpp': ['/usr/local/bin/cquery', '--log-file=/tmp/cquery.log', '--init={"cacheDirectory":"/tmp/cquery/"}'],
+                \ 'python': ['/usr/local/bin/pyls'],
+                \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+                \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+                \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+                \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
                 \ }
 endif
 
@@ -57,7 +62,8 @@ nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 " --- deoplete ---
-let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 0
+autocmd InsertEnter * call deoplete#enable()
 
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=9 foldmethod=marker :
 

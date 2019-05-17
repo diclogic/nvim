@@ -47,7 +47,7 @@ else
 endif
 
 if !WINDOWS()
-    Plug '/usr/local/opt/fzf'
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
 endif
 
@@ -65,6 +65,8 @@ Plug 'vim-airline/vim-airline-themes'
 " --- others ---
 Plug 'chrisbra/csv.vim'
 
+" --- c++ highlight ---
+Plug 'octol/vim-cpp-enhanced-highlight'
 
 call plug#end()
 

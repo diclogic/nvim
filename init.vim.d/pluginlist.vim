@@ -1,49 +1,19 @@
 
 call plug#begin(stdpath('config').'/plugged')
 
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+" --- UI ---
 Plug 'lifepillar/vim-solarized8'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'scrooloose/nerdcommenter'
-Plug 'petRUShka/vim-opencl'
-" Plug 'wakatime/vim-wakatime'
-Plug 'bling/vim-bufferline'
-"Plug 'jewes/conque-shell'
-"Plug 'ctrlpvim/ctrlp.vim'
-
-
-
-" " --- nvim-completion-manager ---
-" Plug 'ncm2/ncm2' 
-" Plug 'roxma/nvim-yarp'
-" Plug 'ncm2/ncm2-bufword'
-" Plug 'ncm2/ncm2-path'
-
-
-
-" Python
-"Plug 'klen/python-mode'
-"Plug 'yssource/python.vim'
-"Plug 'python_match.vim'
-"Plug 'pythoncomplete'
-
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'nathanaelkane/vim-indent-guides'
 
-""""""""""""""""""""""""""""""""""""
+" --- Navigation ---
 if WINDOWS()
-    Plug 'autozimu/LanguageClient-neovim', {
-                \ 'branch': 'next',
-                \ 'do': 'powershell -executionpolicy bypass -File install.ps1',
-                \ }
+    Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next',
+                \ 'do': 'powershell -executionpolicy bypass -File install.ps1' }
 else
-    Plug 'autozimu/LanguageClient-neovim', {
-                \ 'branch': 'next',
-                \ 'do': 'bash install.sh',
-                \ }
+    Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next',
+                \ 'do': 'bash install.sh' }
 endif
 
 if !WINDOWS()
@@ -51,23 +21,26 @@ if !WINDOWS()
     Plug 'junegunn/fzf.vim'
 endif
 
+" --- Editing ---
+Plug 'scrooloose/nerdcommenter'
+Plug 'tpope/vim-surround'
+
+" --- Completion ---
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
 " --- Git ---
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
-" --- deoplete ---
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" --- Project Management ---
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 
-" --- airline ---
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-
-" --- debugger ---
+" --- Debugger ---
 if !WINDOWS()
     Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 endif
 
-" --- others ---
+" --- Others ---
 Plug 'chrisbra/csv.vim'
 
 

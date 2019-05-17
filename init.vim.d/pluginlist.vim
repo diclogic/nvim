@@ -62,6 +62,11 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+" --- debugger ---
+if !WINDOWS()
+    Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
+endif
+
 " --- others ---
 Plug 'chrisbra/csv.vim'
 

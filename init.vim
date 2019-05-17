@@ -1,3 +1,4 @@
+set background=dark
 
 " Include shell and OS settings and utility functions
 exe 'source' expand(stdpath('config').'/'.'init.vim.d/basic.vim')
@@ -27,8 +28,6 @@ exe 'source' expand(stdpath('config').'/'.'init.vim.d/keymappings.vim')
 exe 'source' expand(stdpath('config').'/'.'init.vim.d/pluginsettings.vim')
 
 
-" Refresh UI
-set background=dark
 
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=9 foldmethod=marker :
 

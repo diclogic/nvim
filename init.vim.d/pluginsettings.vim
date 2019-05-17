@@ -35,39 +35,6 @@ if HasPlugin('nerdcommenter')
     let g:NERDSpaceDelims = 1
 endif
 
-" --- cscope ---
-if HasPlugin('cscope.nvim')
-    let g:cscope_dir = '~/.nvim-cscope'
-
-    " Map the default keys on startup
-    " These keys are prefixed by CTRL+\ <cscope param>
-    " A.e.: CTRL+\ d for goto definition of word under cursor
-    " Defaults to off
-    let g:cscope_map_keys = 1
-
-    " Update the cscope files on startup of cscope.
-    " Defaults to off
-    let g:cscope_update_on_start = 1
-
-    " autocmd BufEnter * call cscope.nvim#CScopeStart()
-endif
-
-if has('cscope') && 0
-    if WINDOWS()
-        set csprg=D:\opt\cygwin64\usr\local\bin\cscope.exe
-    else
-        set csprg=/usr/local/bin/cscope
-    endif
-    set csto=0
-    set cst
-    " add any database in current directory
-    if filereadable("cscope.out")
-        silent cs add cscope.out
-        " else add database pointed to by environment
-    elseif $CSCOPE_DB != ""
-        silent cs add $CSCOPE_DB
-    endif
-endif
 
 " --- LanguageClient-neovim ---
 set hidden " < Required for operations modifying multiple buffers like rename.
@@ -79,10 +46,11 @@ if WINDOWS()
                 \ }
 else
     let g:LanguageClient_serverCommands = {
+                \ 'cpp': ['/usr/local/bin/cquery', '--log-file=/tmp/cquery.log', '--init={"cacheDirectory":"/tmp/cquery/"}'],
+                \ 'python': ['/usr/local/bin/pyls'],
                 \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
                 \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
                 \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-                \ 'python': ['/usr/local/bin/pyls'],
                 \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
                 \ }
 endif
@@ -94,7 +62,8 @@ nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 " --- deoplete ---
-let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 0
+autocmd InsertEnter * call deoplete#enable()
 
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=9 foldmethod=marker :
 

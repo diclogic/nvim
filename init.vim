@@ -4,9 +4,13 @@ set background=dark
 exe 'source' expand(stdpath('config').'/'.'init.vim.d/basic.vim')
 
 " Install vim-plug if not installed
-if empty(glob(stdpath('config').'/autoload/plug.vim'))
-  silent exe "!curl -fLo" stdpath('config').'/autoload/plug.vim' "--create-dirs"
+if empty(glob(stdpath('data').'/site/autoload/plug.vim'))
+if WINDOWS()
+exe "!iwr -useb https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim |  ni \"$env:LOCALAPPDATA/nvim-data/site/autoload/plug.vim\" -Force"
+else
+  exe "!curl -fLo" stdpath('config').'/site/autoload/plug.vim' "--create-dirs"
     \ "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+endif
   autocmd VimEnter * PlugInstall
 endif
 

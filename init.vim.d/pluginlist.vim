@@ -7,26 +7,30 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'nathanaelkane/vim-indent-guides'
 
-" --- Navigation ---
-if WINDOWS()
-    Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next',
-                \ 'do': 'powershell -executionpolicy bypass -File install.ps1' }
-else
-    Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next',
-                \ 'do': 'bash install.sh' }
-endif
+" --- LSP(Language Server Protocol) Client ---
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-if !WINDOWS()
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-    Plug 'junegunn/fzf.vim'
-endif
+" if WINDOWS()
+    " Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next',
+                " \ 'do': 'powershell -executionpolicy bypass -File install.ps1' }
+" else
+    " Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next',
+                " \ 'do': 'bash install.sh' }
+" endif
+
+" --- Navigation ---
+" if !WINDOWS()
+    " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    " Plug 'junegunn/fzf.vim'
+" endif
+
 
 " --- Editing ---
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-surround'
 
 " --- Completion ---
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 " --- Git ---
 Plug 'airblade/vim-gitgutter'
@@ -44,7 +48,8 @@ endif
 Plug 'chrisbra/csv.vim'
 
 " --- c++ highlight ---
-Plug 'octol/vim-cpp-enhanced-highlight'
+" Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'jackguo380/vim-lsp-cxx-highlight'
 
 call plug#end()
 

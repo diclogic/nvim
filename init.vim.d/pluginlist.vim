@@ -48,6 +48,7 @@ endif
 Plug 'chrisbra/csv.vim'
 
 " --- c++ highlight ---
+Plug 'vim-scripts/RemoveIfdef'
 " Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 

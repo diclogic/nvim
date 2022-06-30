@@ -1,0 +1,8 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Classes\*\shell\nvim]
+@="Open with Neo&Vim"
+
+[HKEY_CURRENT_USER\Software\Classes\*\shell\nvim\command]
+@="cmd.exe /Q /C \"start /MIN nvr.exe --servername 127.0.0.1:65000 -s --nostart --remote \"\"%1\"\"\""
+

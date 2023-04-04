@@ -86,6 +86,9 @@ autocmd FileType c,cpp,java,go,php,javascript,python,rust,xml,yml,sql setlocal n
 " Match <, > for templates in c++
 autocmd FileType cpp setlocal matchpairs+=<:>
 
+" no spell check for .log files
+autocmd BufRead,BufNewFile *.log    set filetype=log
+autocmd FileType log,dosini setlocal nospell
 
 
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=9 foldmethod=marker :

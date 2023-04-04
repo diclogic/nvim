@@ -63,7 +63,7 @@ nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 " --- deoplete ---
 let g:deoplete#enable_at_startup = 0
-autocmd InsertEnter * call deoplete#enable()
+" autocmd InsertEnter * call deoplete#enable()
 
 " vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldlevel=9 foldmethod=marker :
 

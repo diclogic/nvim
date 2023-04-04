@@ -34,7 +34,7 @@ Plug 'tpope/vim-surround'
 
 " --- Git ---
 Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
+"Plug 'tpope/vim-fugitive'
 
 " --- Project Management ---
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
